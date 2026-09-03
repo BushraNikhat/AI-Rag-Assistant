@@ -35,6 +35,15 @@ async def chat(request: ChatRequest):
         "stream":False
     })
 
-    print("response:", response)
+    
     data =response.json()
     return {"answer": data["message"]["content"]}
+
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="Request to the chat model timed out.")
+
+    except httpx.HttpError:
+        raise HTTPException(status_code=502, detail="Error occurred while communicating with the chat model.")
+        
+    except Exception:
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred")
