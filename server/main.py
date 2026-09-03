@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
+from pypdf import PdfReader
+from io import BytesIO
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import httpx;
@@ -20,6 +22,21 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer:str
+
+@app.post("/document", response_model=dict)
+async def updoad_file(file:UploadFile=File(...)):
+    content=await file.read()
+    pdf = PdfReader(BytesIO(content))
+    # print(pdf)
+
+    text=""
+
+    for page in pdf.pages:
+        page_text=page.extract_text()
+        text +=text+page_text+"\n"
+    # content= await file.read()
+    print(text)
+    return {"filename": text, "content": len(content)}
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
