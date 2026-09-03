@@ -23,27 +23,28 @@ class ChatResponse(BaseModel):
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
-    response = await http_client.post("http://localhost:11434/api/chat",
-    json={
-        "model":"llama3.2",
-        "messages":[
-            {
-                "role":"user",
-                "content":request.message
-            }
-        ],
-        "stream":False
-    })
+    try:
+        response = await http_client.post("http://localhost:11434/api/chat",
+        json={
+            "model":"llama3.2",
+            "messages":[
+                {
+                    "role":"user",
+                    "content":request.message
+                }
+            ],
+            "stream":False
+        })
 
-    
-    data =response.json()
-    return {"answer": data["message"]["content"]}
+        
+        data =response.json()
+        return {"answer": data["message"]["content"]}
 
-    except httpx.TimeoutException:
+    except httpx.time:
         raise HTTPException(status_code=504, detail="Request to the chat model timed out.")
 
     except httpx.HttpError:
         raise HTTPException(status_code=502, detail="Error occurred while communicating with the chat model.")
-        
+
     except Exception:
         raise HTTPException(status_code=500, detail=f"An unexpected error occurred")
