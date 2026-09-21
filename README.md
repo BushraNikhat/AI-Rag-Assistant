@@ -1,7 +1,7 @@
 # AI RAG Assistant
 
 An AI-powered RAG (Retrieval-Augmented Generation) assistant built using
-React, Python, FastAPI, LLMs, embeddings, and vector databases.
+React, Python, FastAPI, LLMs, embeddings, and vector databases, LangChain.
 
 The project is being developed step by step, starting with the fundamentals
 of LLM integration and gradually evolving into a complete RAG application.
@@ -30,6 +30,8 @@ of LLM integration and gradually evolving into a complete RAG application.
 - Structured LLM Output
 - Embedding Models
 - Vector Search
+- Vector DataBase
+- LangChain
 - RAG Pipeline
 
 ### AI Infrastructure
